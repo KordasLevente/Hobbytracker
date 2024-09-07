@@ -22,11 +22,46 @@ let timerRunning = false
 let focusedDate = new Date()
 let studymode = false
 
-let data : Month[] = []
-let currentMonth : Month = Month.fromDate(focusedDate)
-data.push(currentMonth)
-let Today = Day.fromDate(focusedDate)
-getMonth(focusedDate).days.push(Today) 
+
+//localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+let data :Month[]
+let currentMonth : Month
+let Today : Day
+
+function loadSave(sourceJSON : string) {
+    data = []
+    let newdata : Month[] = JSON.parse(sourceJSON)
+    let now = new Date()
+    newdata.forEach(oldmonth => {
+        let newdays:Day[] = []
+        oldmonth.days.forEach(day => {
+            newdays.push(Day.fromObject(day))
+        });
+        let newMonth = Month.fromComponents(oldmonth.id, newdays)
+        data.push(newMonth)
+        currentMonth = newMonth
+    });
+    let day = currentMonth.getDay(now)
+    if(day == null) {
+        day = Day.fromDate(now)
+        currentMonth.days.push(day)
+    }
+    Today = day
+    updateCalendar()
+}
+
+if(localStorage.getItem("hobbyTrackerSave") == null){
+    data = []
+    currentMonth = Month.fromDate(focusedDate)
+    data.push(currentMonth)
+    Today = Day.fromDate(focusedDate)
+    getMonth(focusedDate).days.push(Today) 
+}
+else {
+    loadSave(localStorage.getItem("hobbyTrackerSave"))
+}
+
+
 
 function getMonth(date : Date) : Month {
     let monthid = toMonthID(date)
@@ -81,6 +116,7 @@ function updateTimer(increment = true) {
     if(increment && timerRunning) {
         if(studymode) Today.studyTime += 1000
         else Today.hobbyTime += 1000
+        localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
     }
     
     let timeSpent = studymode ? Today.studyTime : Today.hobbyTime
@@ -125,6 +161,7 @@ timerControl.addEventListener("click", (e) =>{
         //stop timer
         timerRunning = false
         timerControl.textContent = "Start"
+        localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
     }
     else {
         //start timer
@@ -139,29 +176,12 @@ studyTitle.addEventListener("click", switchToStudy)
 
 exportButton.addEventListener("click", (e) => {
     importExportArea.value = JSON.stringify(data)
+    localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
 })
 
 importButton.addEventListener("click", (e) => {
-    data = []
-    let newdata : Month[] = JSON.parse(importExportArea.value)
-    let now = new Date()
-    newdata.forEach(oldmonth => {
-        let newdays:Day[] = []
-        oldmonth.days.forEach(day => {
-            newdays.push(Day.fromObject(day))
-        });
-        let newMonth = Month.fromComponents(oldmonth.id, newdays)
-        data.push(newMonth)
-        currentMonth = newMonth
-    });
-    let day = currentMonth.getDay(now)
-    if(day == null) {
-        day = Day.fromDate(now)
-        currentMonth.days.push(day)
-    }
-    Today = day
-
-    updateCalendar()
+    loadSave(importExportArea.value)
+    localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
 })
 
 updateCalendar()
