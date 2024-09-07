@@ -1,0 +1,98 @@
+main  {
+    margin-top:50px;
+}
+
+.uiBubble {
+    background-color: rgb(240, 240, 240);
+    padding: 20px;
+    border:solid black 1px;
+    border-radius: 10px;
+    align-content: center;
+}
+
+
+button {
+    padding: 10px;
+    font-size:20pt;
+    border: 1px grey solid;
+    border-radius: 10px;
+}
+
+.flex {
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+}
+
+.day{
+    padding:15px;
+    background-color: rgb(183, 183, 183);
+    margin: 5px;
+    border-radius: 10px;
+}
+
+
+aside {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 30pt;
+    margin-left:20px;
+
+}
+
+
+#calendar {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+#calendar-top {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+    font-size:25pt;
+}
+
+#timer{
+    margin-bottom: 10px;
+    font-size:50pt;
+}
+
+.underline {
+    width: 90%;
+    border-bottom: 1px solid black;
+}
+
+.centered {
+    text-align: center;
+}
+
+.sideTitle {
+    font-size:20pt;
+    width:100%;
+}
+
+.fg-darkgreen {
+    color:green;
+}
+
+.fg-lightgreen {
+    color:limegreen;
+}
+
+p{
+    padding:0;
+    margin: 10px 0;
+}
+
+ul {
+    padding:0;
+    margin:0;
+}
+
+li {
+    padding:0;
+    margin:0;
+}
