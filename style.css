@@ -87,7 +87,7 @@ aside {
 }
 
 .underline {
-    width: 90%;
+    width: 100%;
     border-bottom: 1px solid black;
 }
 
@@ -133,7 +133,7 @@ aside {
 }
 
 .border-blue {
-    border:1px solid aqua
+    border:2px solid aqua
 }
 
 .error {
@@ -168,14 +168,21 @@ button:active, a:active {
     background-color: white;
 }
 
-#save {
-    width:660px;
-    margin: 20px auto;
-}
-
 textarea {
     width:auto;
     margin: 10px 20px;
     resize:none
 }
 
+.full-width {
+    width:660px;
+    margin: 20px auto;
+}
+
+.hidden {
+    display:none;
+}
+
+#stats > div.underline {
+    font-size:40pt;
+}

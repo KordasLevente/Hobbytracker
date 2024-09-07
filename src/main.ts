@@ -17,14 +17,16 @@ const exportButton = document.querySelector("#export")
 const resetButton = document.querySelector("#reset")
 const errorText = document.querySelector("#jsoninputerror")
 const importExportArea : HTMLTextAreaElement = document.querySelector("#jsoninput")
-
+const statsDisplay = document.querySelector("#statsDisplay")
+const mainContent = document.querySelector("#maincontent")
+const statsContainer = document.querySelector("#stats")
+const statsTitle = document.querySelector("#statstitle")
 
 let timerRunning = false
 let focusedDate = new Date()
 let studymode = false
 
 
-//localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
 let data :Month[]
 let currentMonth : Month
 let Today : Day
@@ -96,14 +98,14 @@ function loadCalendar() {
         day.classList.add("day")
         day.textContent = `${leftpadLowNumber(i, " ")}`
         calendar.appendChild(day)
-        
+
         if(monthObj == null) continue
         let dayObj = monthObj.getDay(new Date(focusedDate.getFullYear(), focusedDate.getMonth(),i))
         if(dayObj == null) continue
         let completion = dayObj.completion(studymode ? "study" : "hobby")
         if (completion > 0) day.classList.add(`${studymode ? "bg-darkred" : "bg-darkgreen"}`)
         if (completion > 1) day.classList.add(`${studymode ? "bg-lightred" : "bg-lightgreen"}`)
-        //if (dayObj.id == Today.id) day.classList.add("border-blue")
+        if (dayObj.id == Today.id) day.classList.add("border-blue")
     }
 }
 
@@ -142,26 +144,57 @@ function updateTimer(increment = true) {
 
 function switchToStudy() {
     if(timerRunning) return
+    mainContent.classList.remove("hidden")
+    statsContainer.classList.add("hidden")
     studymode = true
     shortGoalDisplay.classList.remove("fg-darkgreen")
     longGoalDisplay.classList.remove("fg-lightgreen")
     shortGoalDisplay.classList.add("fg-darkred")
     longGoalDisplay.classList.add("fg-lightred")
-    studyTitle.classList.remove("notbold")
     hobbyTitle.classList.add("notbold")
+    statsTitle.classList.add("notbold")
+    studyTitle.classList.remove("notbold")
     updateTimer(false)
 }
 
 function switchToHobby() {
     if(timerRunning) return
+    mainContent.classList.remove("hidden")
+    statsContainer.classList.add("hidden")
     studymode = false
     shortGoalDisplay.classList.add("fg-darkgreen")
     longGoalDisplay.classList.add("fg-lightgreen")
     shortGoalDisplay.classList.remove("fg-darkred")
     longGoalDisplay.classList.remove("fg-lightred")
     studyTitle.classList.add("notbold")
+    statsTitle.classList.add("notbold")
     hobbyTitle.classList.remove("notbold")
     updateTimer(false)
+}
+
+function switchToStats() {
+    if(timerRunning) return
+    mainContent.classList.add("hidden")
+    statsContainer.classList.remove("hidden")
+    studyTitle.classList.add("notbold")
+    hobbyTitle.classList.add("notbold")
+    statsTitle.classList.remove("notbold")
+
+    // var hours = Math.floor((timeSpent % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    // var minutes = Math.floor((timeSpent % (1000 * 60 * 60)) / (1000 * 60))
+    // var seconds = Math.floor((timeSpent % (1000 * 60)) / 1000)
+
+    //let score = 0
+    //let daysStudied = 0
+    //let daysHobbied = 0
+    //let hrsStudied = 0
+    //let minsStudied = 0
+    //let secsStudied = 0
+    //let hrsHobbied
+    //let minsHobbied
+    //let secsHobbied
+    //statsContainer.textContent += "Score: "
+
 }
 
 timerControl.addEventListener("click", (e) =>{
@@ -181,7 +214,7 @@ timerControl.addEventListener("click", (e) =>{
 
 hobbyTitle.addEventListener("click", switchToHobby)
 studyTitle.addEventListener("click", switchToStudy)
-
+statsTitle.addEventListener("click", switchToStats)
 exportButton.addEventListener("click", (e) => {
     importExportArea.value = JSON.stringify(data)
     localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))

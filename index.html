@@ -8,44 +8,49 @@
 </head>
 <body>
     <header class="flex">
-        <h1 id="hobbytitle">Hobbytracker</h1> <h1 id="studytitle" class="notbold">Studytracker</h1> <h1 id="studytitle" class="notbold">Statistics</h1>    
+        <h1 id="hobbytitle">Hobbytracker</h1> <h1 id="studytitle" class="notbold">Studytracker</h1> <h1 id="statstitle" class="notbold">Statistics</h1>    
     </header>
     <hr>
     <main>
-        <div class="flex-center">
-            <div id="calendar-parent" class="uiBubble">
-                <div class="centered minitext" id="currentyear"></div>
-                <div id="calendar-top"><a id="prevmonth"><<</a> <div id="currentmonth"></div> <a id="nextmonth">>></a></div>
-                <hr>
-                <div id="calendar"></div>
-            </div>
-
-                <aside class="uiBubble">
-                    <div class="underline centered">Timer</div>
-                    <div id="timer">0:00:00</div>
-                    <button id="timerControl">Start</button>
+        <div id="maincontent">
+            <div class="flex-center">
+                <div id="calendar-parent" class="uiBubble">
+                    <div class="centered minitext" id="currentyear"></div>
+                    <div id="calendar-top"><a id="prevmonth"><<</a> <div id="currentmonth"></div> <a id="nextmonth">>></a></div>
                     <hr>
-                    <div id="goals" class="sideTitle">
-                        <p class="underline">Goals:</p>
-                        <div>
-                            <div id="shortgoal" class="fg-darkgreen">30:00</div>
-                            <div id="longgoal" class="fg-lightgreen">1:00:00</div>
+                    <div id="calendar"></div>
+                </div>
+                    <aside class="uiBubble">
+                        <div class="underline centered">Timer</div>
+                        <div id="timer">0:00:00</div>
+                        <button id="timerControl">Start</button>
+                        <hr>
+                        <div id="goals" class="sideTitle">
+                            <p class="underline">Goals:</p>
+                            <div>
+                                <div id="shortgoal" class="fg-darkgreen">30:00</div>
+                                <div id="longgoal" class="fg-lightgreen">1:00:00</div>
+                            </div>
+            
                         </div>
-                        
-                    </div>
-                </aside>
-        </div>
-        <div id="save" class="uiBubble">
-            <div class="sideTitle underline">Save/Load your progress</div>
-            <textarea name="jsoninput" id="jsoninput" cols="80" rows="10"></textarea>
-            <div id="jsoninputerror" class="error"></div>
-            <div class="flex space-between">
-            <div>
-            <button id="import">Import</button>
-            <button id="export">Export</button>
+                    </aside>
             </div>
-            <button id="reset">Reset save file</button>
+            <div id="save" class="uiBubble full-width">
+                <div class="sideTitle underline">Save/Load your progress</div>
+                <textarea name="jsoninput" id="jsoninput" cols="80" rows="10"></textarea>
+                <div id="jsoninputerror" class="error"></div>
+                <div class="flex space-between">
+                <div>
+                <button id="import">Import</button>
+                <button id="export">Export</button>
+                </div>
+                <button id="reset">Reset save file</button>
+            </div>
+            </div>
         </div>
+        <div id="stats" class="uiBubble full-width hidden">
+            <div class="underline centered">Statistics</div>
+            <p id="statsDisplay"></p>
         </div>
     </main>
     <script src="dist/bundle.js"></script>
