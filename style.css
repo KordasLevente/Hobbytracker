@@ -56,7 +56,7 @@ aside {
     align-items: center;
     font-size: 30pt;
     margin-left:20px;
-
+    width: 205px;
 }
 
 
@@ -112,6 +112,22 @@ aside {
     color:rgb(255, 0, 0);
 }
 
+.bg-darkgreen {
+    background-color:green;
+}
+
+.bg-lightgreen {
+    background-color:limegreen;
+}
+
+.bg-darkred {
+    background-color:darkred;
+}
+
+.bg-lightred {
+    background-color:rgb(255, 0, 0);
+}
+
 p{
     padding:0;
     margin: 10px 0;
@@ -132,10 +148,26 @@ a {
     border-radius: 10px;
 }
 
-a:hover {
+button:hover, a:hover {
     background-color: rgb(200, 200, 200);
 }
 
-a:active {
+button:active, a:active {
     background-color: white;
+}
+
+#save {
+    width:660px;
+    margin: 20px auto;
+}
+
+textarea {
+    width:auto;
+    margin: 10px 20px;
+    resize:none
+}
+
+.error {
+    color:red
+
 }

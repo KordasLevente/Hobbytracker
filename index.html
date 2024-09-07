@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="flex">
-        <h1 id="hobbytitle">Hobbytracker</h1> <h1 id="studytitle" class="notbold">Studytracker</h1>    
+        <h1 id="hobbytitle">Hobbytracker</h1> <h1 id="studytitle" class="notbold">Studytracker</h1> <h1 id="studytitle" class="notbold">Statistics</h1>    
     </header>
     <hr>
     <main>
@@ -34,6 +34,13 @@
                         
                     </div>
                 </aside>
+        </div>
+        <div id="save" class="uiBubble">
+            <div class="sideTitle underline">Import/Export</div>
+            <textarea name="jsoninput" id="jsoninput" cols="80" rows="10"></textarea>
+            <div id="jsoninputerror" class="error"></div>
+            <button id="import">Import</button>
+            <button id="export">Export</button>
         </div>
     </main>
     <script src="dist/bundle.js"></script>
