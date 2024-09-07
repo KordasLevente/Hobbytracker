@@ -1,5 +1,18 @@
+html {
+    user-select: none;
+}
 main  {
     margin-top:50px;
+}
+
+header {
+    width:100%;
+    justify-content: center;
+}
+
+header * {
+    padding-right:25px;
+    padding-left:25px;
 }
 
 .uiBubble {
@@ -18,10 +31,15 @@ button {
     border-radius: 10px;
 }
 
-.flex {
+.flex-center {
     display:flex;
     flex-direction: row;
     justify-content:center;
+}
+
+.flex {
+    display:flex;
+    flex-direction: row;
 }
 
 .day{
@@ -55,6 +73,10 @@ aside {
     font-size:25pt;
 }
 
+#calendar-parent  {
+    padding-top: 5px;
+}
+
 #timer{
     margin-bottom: 10px;
     font-size:50pt;
@@ -82,17 +104,38 @@ aside {
     color:limegreen;
 }
 
+.fg-darkred {
+    color:darkred;
+}
+
+.fg-lightred {
+    color:rgb(255, 0, 0);
+}
+
 p{
     padding:0;
     margin: 10px 0;
 }
 
-ul {
+.minitext {
+    font-size:15pt;
     padding:0;
     margin:0;
 }
 
-li {
-    padding:0;
-    margin:0;
+.notbold {
+    font-weight: normal;
+}
+
+a {
+    padding: 0 5px;
+    border-radius: 10px;
+}
+
+a:hover {
+    background-color: rgb(200, 200, 200);
+}
+
+a:active {
+    background-color: white;
 }

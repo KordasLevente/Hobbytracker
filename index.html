@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header><h1>Hobbytracker</h1>
-    
+    <header class="flex">
+        <h1 id="hobbytitle">Hobbytracker</h1> <h1 id="studytitle" class="notbold">Studytracker</h1>    
     </header>
     <hr>
     <main>
-        <div class="flex">
+        <div class="flex-center">
             <div id="calendar-parent" class="uiBubble">
-                <div id="calendar-top"><a id="prevmonth"><<</a> <div id="currentmonth">September</div> <a id="nextmonth">>></a></div>
+                <div class="centered minitext" id="currentyear"></div>
+                <div id="calendar-top"><a id="prevmonth"><<</a> <div id="currentmonth"></div> <a id="nextmonth">>></a></div>
                 <hr>
                 <div id="calendar"></div>
             </div>
@@ -27,8 +28,8 @@
                     <div id="goals" class="sideTitle">
                         <p class="underline">Goals:</p>
                         <div>
-                            <div class="fg-darkgreen">30:00</div>
-                            <div class="fg-lightgreen">1:00:00</div>
+                            <div id="shortgoal" class="fg-darkgreen">30:00</div>
+                            <div id="longgoal" class="fg-lightgreen">1:00:00</div>
                         </div>
                         
                     </div>
