@@ -14,6 +14,7 @@ const shortGoalDisplay = document.querySelector("#shortgoal")
 const longGoalDisplay = document.querySelector("#longgoal")
 const importButton = document.querySelector("#import")
 const exportButton = document.querySelector("#export")
+const resetButton = document.querySelector("#reset")
 const errorText = document.querySelector("#jsoninputerror")
 const importExportArea : HTMLTextAreaElement = document.querySelector("#jsoninput")
 
@@ -50,12 +51,18 @@ function loadSave(sourceJSON : string) {
     updateCalendar()
 }
 
-if(localStorage.getItem("hobbyTrackerSave") == null){
+function resetSave() {
+    console.log(JSON.stringify(data))
     data = []
     currentMonth = Month.fromDate(focusedDate)
     data.push(currentMonth)
     Today = Day.fromDate(focusedDate)
-    getMonth(focusedDate).days.push(Today) 
+    getMonth(focusedDate).days.push(Today)
+    localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+}
+
+if(localStorage.getItem("hobbyTrackerSave") == null){
+    resetSave()
 }
 else {
     loadSave(localStorage.getItem("hobbyTrackerSave"))
@@ -96,6 +103,7 @@ function loadCalendar() {
         let completion = dayObj.completion(studymode ? "study" : "hobby")
         if (completion > 0) day.classList.add(`${studymode ? "bg-darkred" : "bg-darkgreen"}`)
         if (completion > 1) day.classList.add(`${studymode ? "bg-lightred" : "bg-lightgreen"}`)
+        //if (dayObj.id == Today.id) day.classList.add("border-blue")
     }
 }
 
@@ -182,6 +190,10 @@ exportButton.addEventListener("click", (e) => {
 importButton.addEventListener("click", (e) => {
     loadSave(importExportArea.value)
     localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+})
+
+resetButton.addEventListener("click", (e) => {
+    resetSave()
 })
 
 updateCalendar()

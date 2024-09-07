@@ -42,6 +42,10 @@ button {
     flex-direction: row;
 }
 
+.space-between {
+    justify-content: space-between;
+}
+
 .day{
     padding:15px;
     background-color: rgb(183, 183, 183);
@@ -128,6 +132,14 @@ aside {
     background-color:rgb(255, 0, 0);
 }
 
+.border-blue {
+    border:1px solid aqua
+}
+
+.error {
+    color:red
+}
+
 p{
     padding:0;
     margin: 10px 0;
@@ -167,7 +179,3 @@ textarea {
     resize:none
 }
 
-.error {
-    color:red
-
-}
