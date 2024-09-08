@@ -15,12 +15,22 @@ const longGoalDisplay = document.querySelector("#longgoal")
 const importButton = document.querySelector("#import")
 const exportButton = document.querySelector("#export")
 const resetButton = document.querySelector("#reset")
-const errorText = document.querySelector("#jsoninputerror")
 const importExportArea : HTMLTextAreaElement = document.querySelector("#jsoninput")
 const statsDisplay = document.querySelector("#statsDisplay")
 const mainContent = document.querySelector("#maincontent")
 const statsContainer = document.querySelector("#stats")
 const statsTitle = document.querySelector("#statstitle")
+
+//stats
+let score = 0
+let daysStudied = 0
+let daysHobbied = 0
+let hrsStudied = 0
+let minsStudied = 0
+let secsStudied = 0
+let hrsHobbied = 0
+let minsHobbied = 0
+let secsHobbied = 0
 
 let timerRunning = false
 let focusedDate = new Date()
@@ -55,12 +65,14 @@ function loadSave(sourceJSON : string) {
 
 function resetSave() {
     console.log(JSON.stringify(data))
+    let now = new Date()
     data = []
-    currentMonth = Month.fromDate(focusedDate)
+    currentMonth = Month.fromDate(now)
     data.push(currentMonth)
-    Today = Day.fromDate(focusedDate)
-    getMonth(focusedDate).days.push(Today)
+    Today = Day.fromDate(now)
+    getMonth(now).days.push(Today)
     localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+    updateCalendar()
 }
 
 if(localStorage.getItem("hobbyTrackerSave") == null){
@@ -69,7 +81,6 @@ if(localStorage.getItem("hobbyTrackerSave") == null){
 else {
     loadSave(localStorage.getItem("hobbyTrackerSave"))
 }
-
 
 
 function getMonth(date : Date) : Month {
@@ -82,7 +93,7 @@ function getMonth(date : Date) : Month {
 }
 
 function daysInMonth (month:number, year:number) : number {
-    return new Date(year, month, 0).getDate();
+    return new Date(year, month+1, 0).getDate();
 }
 
 export function leftpadLowNumber(input:number, padstr : string) {
@@ -102,11 +113,20 @@ function loadCalendar() {
         if(monthObj == null) continue
         let dayObj = monthObj.getDay(new Date(focusedDate.getFullYear(), focusedDate.getMonth(),i))
         if(dayObj == null) continue
-        let completion = dayObj.completion(studymode ? "study" : "hobby")
-        if (completion > 0) day.classList.add(`${studymode ? "bg-darkred" : "bg-darkgreen"}`)
-        if (completion > 1) day.classList.add(`${studymode ? "bg-lightred" : "bg-lightgreen"}`)
-        if (dayObj.id == Today.id) day.classList.add("border-blue")
+        colorDay(day,dayObj)
     }
+    let dummy = document.createElement("div")
+    dummy.classList.add("dummyday")
+    dummy.textContent = " "
+    calendar.appendChild(dummy)
+}
+
+function colorDay(dayElement :HTMLDivElement, dayObj : Day) {
+    let completion = dayObj.completion(studymode ? "study" : "hobby")
+    dayElement.classList.remove("bg-darkred", "bg-darkgreen", "bg-lightred", "bg-lightgreen")
+    if (completion > 0) dayElement.classList.add(`${studymode ? "bg-darkred" : "bg-darkgreen"}`)
+    if (completion > 1) dayElement.classList.add(`${studymode ? "bg-lightred" : "bg-lightgreen"}`)
+    if (dayObj.id == Today.id) dayElement.classList.add("border-blue")
 }
 
 function updateCalendar() {
@@ -155,6 +175,7 @@ function switchToStudy() {
     statsTitle.classList.add("notbold")
     studyTitle.classList.remove("notbold")
     updateTimer(false)
+    updateCalendar()
 }
 
 function switchToHobby() {
@@ -170,32 +191,77 @@ function switchToHobby() {
     statsTitle.classList.add("notbold")
     hobbyTitle.classList.remove("notbold")
     updateTimer(false)
+    updateCalendar()
+}
+
+function calculateStats() {
+    let hobbyTimeSum = 0
+    let studyTimeSum = 0
+    data.forEach(month => {
+        month.days.forEach(day => {
+            hobbyTimeSum += day.hobbyTime
+            studyTimeSum += day.studyTime
+            let hobbyCompletion = day.completion("hobby")
+            if( hobbyCompletion > 0){
+                score++
+                daysHobbied++
+            }
+            if(hobbyCompletion > 1) score++
+
+            let studyCompletion = day.completion("study")
+            if( studyCompletion > 0){
+                score++
+                daysStudied++
+            }
+            if(studyCompletion > 1) score++
+
+        })
+    });
+
+    hrsStudied = Math.floor((studyTimeSum % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    minsStudied = Math.floor((studyTimeSum % (1000 * 60 * 60)) / (1000 * 60))
+    secsStudied = Math.floor((studyTimeSum % (1000 * 60)) / 1000)
+    hrsHobbied = Math.floor((hobbyTimeSum % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    minsHobbied = Math.floor((hobbyTimeSum % (1000 * 60 * 60)) / (1000 * 60))
+    secsHobbied = Math.floor((hobbyTimeSum % (1000 * 60)) / 1000)
 }
 
 function switchToStats() {
     if(timerRunning) return
+    calculateStats()
     mainContent.classList.add("hidden")
     statsContainer.classList.remove("hidden")
     studyTitle.classList.add("notbold")
     hobbyTitle.classList.add("notbold")
     statsTitle.classList.remove("notbold")
 
-    // var hours = Math.floor((timeSpent % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    // var minutes = Math.floor((timeSpent % (1000 * 60 * 60)) / (1000 * 60))
-    // var seconds = Math.floor((timeSpent % (1000 * 60)) / 1000)
-
-    //let score = 0
-    //let daysStudied = 0
-    //let daysHobbied = 0
-    //let hrsStudied = 0
-    //let minsStudied = 0
-    //let secsStudied = 0
-    //let hrsHobbied
-    //let minsHobbied
-    //let secsHobbied
-    //statsContainer.textContent += "Score: "
-
+    statsDisplay.innerHTML = `  Score: ${score}<br>
+                                    Completed days: hobby: ${daysHobbied} | study: ${daysStudied}<br>
+                                    Time spent on hobbies: ${hrsHobbied} hrs, ${minsHobbied} mins, ${secsHobbied} secs<br>
+                                    Time spent on studying: ${hrsStudied} hrs, ${minsStudied} mins, ${secsStudied} secs`
 }
+
+function resetCalendarView() {
+    focusedDate = new Date()
+    updateCalendar()
+}
+
+function focusPrevMonth(){
+    if(timerRunning) return
+    let year = focusedDate.getFullYear()
+    let month = focusedDate.getMonth()
+    focusedDate = new Date(month -1 < 0 ? year-1 : year, month-1 < 0 ? 11 : month-1, 1)
+    updateCalendar()  
+}
+
+function focusNextMonth(){
+    if(timerRunning) return
+    let year = focusedDate.getFullYear()
+    let month = focusedDate.getMonth()
+    focusedDate = new Date(month +1 > 11 ? year+1 : year, month+1 > 11 ? 0 : month+1, 1)
+    updateCalendar()
+}
+
 
 timerControl.addEventListener("click", (e) =>{
     if(timerRunning){
@@ -206,6 +272,7 @@ timerControl.addEventListener("click", (e) =>{
     }
     else {
         //start timer
+        resetCalendarView()
         timerRunning = true
         timerControl.textContent = "Stop"
 
@@ -216,18 +283,29 @@ hobbyTitle.addEventListener("click", switchToHobby)
 studyTitle.addEventListener("click", switchToStudy)
 statsTitle.addEventListener("click", switchToStats)
 exportButton.addEventListener("click", (e) => {
+    if(timerRunning) return
     importExportArea.value = JSON.stringify(data)
     localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+    resetCalendarView()
 })
 
 importButton.addEventListener("click", (e) => {
+    if(timerRunning) return
+    if (importExportArea.value == "") return
+    console.log(JSON.stringify(data))
     loadSave(importExportArea.value)
     localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+    resetCalendarView()
 })
 
 resetButton.addEventListener("click", (e) => {
+    if(timerRunning) return
     resetSave()
+    resetCalendarView()
 })
+
+prevMonthButton.addEventListener("click", focusPrevMonth)
+nextMonthButton.addEventListener("click", focusNextMonth)
 
 updateCalendar()
 setInterval(updateTimer,1000)
