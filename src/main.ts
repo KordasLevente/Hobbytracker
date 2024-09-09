@@ -313,6 +313,7 @@ nextMonthButton.addEventListener("click", focusNextMonth)
 
 
 updateCalendar()
+updateTimer(false)
 
 document.addEventListener("visibilitychange", () => {
     if(!timerRunning) return
@@ -324,10 +325,12 @@ document.addEventListener("visibilitychange", () => {
     else {
         //updating and restarting timer
         let now = new Date()
-        let timeDiff : number = now.getMilliseconds() - stoppedTime.getMilliseconds()
+        let timeDiff : number = now.getTime() - stoppedTime.getTime()
         if(studymode) Today.studyTime += timeDiff
         else Today.hobbyTime += timeDiff
+        console.log(timeDiff)
         stoppedTime = new Date(0,0,0)
+        updateTimer(false)
         timerInterval = setInterval(updateTimer, 1000)
     }
 })
