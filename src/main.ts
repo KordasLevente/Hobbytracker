@@ -37,7 +37,7 @@ let focusedDate = new Date()
 let studymode = false
 //in case of tab becoming inactive
 let stoppedTime : Date = new Date(0,0,0)
-let timerInterval : number
+let timerInterval : ReturnType<typeof setTimeout>
 
 let data :Month[]
 let currentMonth : Month
