@@ -35,7 +35,9 @@ let secsHobbied = 0
 let timerRunning = false
 let focusedDate = new Date()
 let studymode = false
-
+//in case of tab becoming inactive
+let stoppedTime : Date = new Date(0,0,0)
+let timerInterval : number
 
 let data :Month[]
 let currentMonth : Month
@@ -269,12 +271,14 @@ timerControl.addEventListener("click", (e) =>{
         timerRunning = false
         timerControl.textContent = "Start"
         localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
+        clearInterval(timerInterval)
     }
     else {
         //start timer
         resetCalendarView()
         timerRunning = true
         timerControl.textContent = "Stop"
+        timerInterval = setInterval(updateTimer, 1000)
 
     }
 })
@@ -307,5 +311,23 @@ resetButton.addEventListener("click", (e) => {
 prevMonthButton.addEventListener("click", focusPrevMonth)
 nextMonthButton.addEventListener("click", focusNextMonth)
 
+
 updateCalendar()
-setInterval(updateTimer,1000)
+
+document.addEventListener("visibilitychange", () => {
+    if(!timerRunning) return
+    if(document.hidden) {
+        //stopping timer
+        stoppedTime = new Date()
+        clearInterval(timerInterval)
+    }
+    else {
+        //updating and restarting timer
+        let now = new Date()
+        let timeDiff : number = now.getMilliseconds() - stoppedTime.getMilliseconds()
+        if(studymode) Today.studyTime += timeDiff
+        else Today.hobbyTime += timeDiff
+        stoppedTime = new Date(0,0,0)
+        timerInterval = setInterval(updateTimer, 1000)
+    }
+})
