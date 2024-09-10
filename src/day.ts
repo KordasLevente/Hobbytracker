@@ -15,6 +15,11 @@ export class Day {
         return Math.floor(minutes / 30) * 1 + hours*2
     }
 
+    began(type : "study" | "hobby") {
+        let timeSpent = (type == "study" ? this.studyTime : this.hobbyTime)
+        return timeSpent > 0
+    }
+
     static fromDate(date:Date) {
         return new Day(toDayID(date),0,0)
     }

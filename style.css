@@ -142,6 +142,13 @@ aside {
     outline:2px solid aqua;
 }
 
+.border-green {
+    outline: 2px solid green;
+}
+
+.border-red {
+    outline: 2px solid darkred;
+}
 
 p{
     padding:0;

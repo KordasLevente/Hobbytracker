@@ -43,6 +43,7 @@ let data :Month[]
 let currentMonth : Month
 let Today : Day
 
+
 function loadSave(sourceJSON : string) {
     data = []
     let newdata : Month[] = JSON.parse(sourceJSON)
@@ -124,11 +125,23 @@ function loadCalendar() {
 }
 
 function colorDay(dayElement :HTMLDivElement, dayObj : Day) {
+    if (dayObj.id == Today.id) dayElement.classList.add("border-blue")
+    if(!dayObj.began(studymode ? "study" : "hobby")) return
     let completion = dayObj.completion(studymode ? "study" : "hobby")
     dayElement.classList.remove("bg-darkred", "bg-darkgreen", "bg-lightred", "bg-lightgreen")
-    if (completion > 0) dayElement.classList.add(`${studymode ? "bg-darkred" : "bg-darkgreen"}`)
-    if (completion > 1) dayElement.classList.add(`${studymode ? "bg-lightred" : "bg-lightgreen"}`)
-    if (dayObj.id == Today.id) dayElement.classList.add("border-blue")
+    let timeSpent = studymode ? dayObj.studyTime : dayObj.hobbyTime
+    var hours = Math.floor((timeSpent % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeSpent % (1000 * 60 * 60)) / (1000 * 60))
+    var seconds = Math.floor((timeSpent % (1000 * 60)) / 1000)
+    dayElement.title = `${hours} hrs, ${minutes} mins, ${seconds} secs`
+    if (completion > 0) {
+        dayElement.classList.add(`${studymode ? "bg-darkred" : "bg-darkgreen"}`)
+    }
+    else if (completion > 1) dayElement.classList.add(`${studymode ? "bg-lightred" : "bg-lightgreen"}`)
+    else {
+        if(!dayElement.classList.contains("border-blue")) dayElement.classList.add(`${studymode ? "border-red" : "border-green"}`)
+    }
+    
 }
 
 function updateCalendar() {
