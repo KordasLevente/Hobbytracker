@@ -76,6 +76,7 @@ function resetSave() {
     getMonth(now).days.push(Today)
     localStorage.setItem("hobbyTrackerSave",JSON.stringify(data))
     updateCalendar()
+    updateTimer(false)
 }
 
 if(localStorage.getItem("hobbyTrackerSave") == null){
